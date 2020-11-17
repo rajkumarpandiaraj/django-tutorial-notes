@@ -1,0 +1,69 @@
+                                                6.Models
+
+        -> Models in python are a class which represent a table in a database.
+        -> Each type of data we have (eg : Articles, Users) is represented by it's own Models.
+        -> Each model maps to a single table in database.
+
+
+        In code
+    class Article():
+    title = models.CharField()
+    body = models.TextField()
+
+        In Database
+        Article //name of the model[class Name]
+    id      title       body
+    1       blah        blah blah blah
+    2       bla2        blah blah blah
+    3       bla3        blah blah blah
+///////////////////////////////////////////////////////////
+
+Folder structure :-
+        djangonautic(proj folder)
+        -> djangonautic(base app folder)
+        -> articles(app folder)
+                -> .....
+                -> models.py *
+                -> views.py
+                -> urls.py
+                -> templates(folder)
+                    -> articles
+                        -> articles_list.html
+                -> ...
+        -> manage.py
+        -> templates
+                -> home.html
+                -> about.html
+
+//////////////////////////////////////////////////////////////////////////
+In articles/models.py
+
+from django import models
+
+class Article(models.Model) : //inheriting models.Model
+    title = models.CharField(max-length=100)     // CharField() is a field type of the title field
+    slug = models.SlugField()
+    body = models.TextField()
+    date = models.DateTimeField(auto_now_add = True)
+    #add thumbnail later
+    #add author later
+
+After this, this data has to migrate to the database
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

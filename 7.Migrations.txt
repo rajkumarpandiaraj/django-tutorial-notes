@@ -1,0 +1,9 @@
+                                                        7.Migrations
+
+After creating or editing the Model, we have to make the migrate file using the command
+            -> python manage.py makemigrations
+
+After that we have migrate the file using command
+            -> python manage.py migrate
+
+In the next vdo we gonna see how to interact with database using django ORM

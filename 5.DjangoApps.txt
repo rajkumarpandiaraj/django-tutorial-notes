@@ -1,0 +1,98 @@
+                                    5. Django Apps
+
+creating views.py in base app is not django way of doing. it is for the basic understanding.
+    -> In Django, we have to create different apps for different section of the website.
+
+
+djangonautic app ----->------> django project ------->------> account app
+    urls.py                         |                               urls.py
+                                    |                               views.py
+                                    |                               /templates
+                                articles app
+                                    urls.py
+                                    views.py
+                                    /templates
+
+
+Here we gonna create articles apps to display the articles.
+And account app to maintain the authentication.
+
+To create App :-
+    python manage.py startapp [appName](here articles)
+
+After creating the app
+    ->  create urls.py and templates(folder)
+Folder structure :-
+        djangonautic(proj folder)
+        -> djangonautic(base app folder)
+        -> articles(app folder)
+                -> .....
+                -> views.py
+                -> urls.py
+                -> templates(folder)
+                    -> articles
+                        -> articles_list.html
+                -> ...
+        -> manage.py
+        -> templates
+                -> home.html
+                -> about.html
+
+After creating the app we have to REGISTER THE App
+
+In setting.py
+.....
+........
+...........
+INSTALLED_APPS = [
+    ...,
+    .......,
+    .........,
+    'articles', //[AppName]
+]
+///////////////////////////////////////////////
+In articles/urls.py
+
+from django.config.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.articles_list) 
+]
+
+///////////////////////////////////////////////
+In articles/views.py
+
+from django.shortcuts import render
+
+def articles_list(request) :
+    return render(request,'articles/articles_list.html')
+
+
+
+/////////////////////////////////////////////
+
+In articles/templates/articles/articles_list.html
+
+<html>
+    <head>
+        <title>Articles List</title>
+    </head>
+    <body>
+        <h1>Articles List</h1>
+    </body>
+</html>
+
+///////////////////////////////////////////
+In djangonautic/urls.py
+
+from django.config.urls import url, include
+from django.contrib import admin
+from . import views
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^articles/', include('articles.urls')) //include([appName.url])
+    url(r'^about/$', views.about),
+    url(r'^$', views.home),
+]
