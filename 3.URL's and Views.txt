@@ -1,0 +1,50 @@
+                                        3.URL's and Views
+
+Browser -------->-------->---------> Urls.py ---------->---------------------> views.py -------->-------->-----------> Browser
+        request to '/about'            -> looks at the request URL                          response(from views.py)
+                                       -> decides whic func to fire in views.py
+
+///////////////////////////////////////////////////////////////////////////////////
+creating the url :
+
+In Urls.py
+
+from django.config.urls import url
+from django.contrib import admin
+from . import views
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls)
+    url(r'^about/$', views.about) 
+    url(r'^$', views.home) 
+]
+
+eg : url(r,'^about/$, func)
+
+r indicates raw string
+^ indicates start of the string(redgex)
+$ indicates end of the string(redgex)
+
+///////////////////////////////////////////////////////////////////////////////
+create the views.py file in djangonatic folder
+
+In views.py
+
+from django.http import HttpResponse
+
+def about(request) :
+    return HttpResponse("About")
+
+
+def home(request) :
+    return HttpResponse("Home")
+
+/////////////////////////////////////////////////////////////
+
+Run the local Server :
+    -> python manage.py runserver
+
+open the local Server in the Browser
+
+/about url display the text "About"
+'' url display the text "Home"

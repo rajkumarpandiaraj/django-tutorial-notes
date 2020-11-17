@@ -1,0 +1,76 @@
+                                            4.HTML Templates
+
+sending html Templates as HttpsResponse.
+
+1.creating HTML Templates in templates folder for home and about page
+
+    Folder structure :-
+        djangonautic(proj folder)
+        -> djangonautic(base app folder)
+                -> init.py
+                -> settings.py
+                -> urls.py
+                -> views.py
+                -> wsgi.py
+        -> manage.py
+        -> templates
+                -> home.html
+                -> about.html
+
+/////////////////////////////////////////////
+In templates(f), 
+In home.html(file)
+
+<html>
+    <head>
+        <title>Home Page</title>
+    </head>
+    <body>
+        <h1>Home Page</h1>
+    </body>
+</html>
+////////////////////////////////////////////////
+In about.html
+
+<html>
+    <head>
+        <title>About Page</title>
+    </head>
+    <body>
+        <h1>About Page</h1>
+    </body>
+</html>
+//////////////////////////////////////////////////////////
+After saving both the files 
+In setting.py
+    TEMPLATES =[
+        ......
+       " DIRS" : ['templates']
+       .........
+    ]
+
+
+
+///////////////////////////////////////////////////////////
+In views.py
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
+def about(request) :
+    # return HttpResponse("About")
+
+    return render(request, 'home.html')
+
+
+def home(request) :
+    # return HttpResponse("Home")
+
+    return render(request, 'about.html')
+
+
+render()
+   takes request obj and template 
+
+
+/////////////////////////////////////////////////////////////

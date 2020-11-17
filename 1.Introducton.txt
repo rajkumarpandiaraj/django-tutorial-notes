@@ -1,0 +1,20 @@
+                                                1.Introduction
+
+What is Django ?
+        -> A web Application framework built with python
+        -> Comes wit many cool features to help with..
+                * User Authentication
+                * Templating language
+                * Routing 
+                And Many more.....
+        -> Allows us to easily create dynamic web apps using python
+
+        [Client] -------> [server]
+                            1.Django framework
+                            2.python code
+                            3.database
+                            4.html Templates 
+
+In this tutorial we gonna build the blog post app with user Authentication.
+
+Install python before using django

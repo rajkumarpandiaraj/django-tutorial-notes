@@ -1,0 +1,25 @@
+                                            2.Create Blog
+
+Installing Django:-
+    1.install python.
+    2.installing Django using pip.
+        -> pip install django [command]
+
+    3. change dir to the Proj folder.
+    4.create django proj.
+        -> django-admin startproject [proj-name](here djangonautic)
+
+After creating the django proj, we can see the folder with the proj name.
+
+    djangonautic(proj folder)
+        -> djangonautic(base app folder)
+                -> init.py
+                -> settings.py
+                -> urls.py
+                -> wsgi.py
+        -> manage.py
+
+To run the server(to preview)
+
+        -> cd djangonautic
+        -> python manage.py runserver
