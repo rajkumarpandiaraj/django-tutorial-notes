@@ -1,0 +1,35 @@
+                                                    8.Django ORM
+
+we are going to interact with the database using COMMAND shell
+
+To Open the interactive shell
+        python manage.py shell //ctrl + z to exit from the shell
+
+INTERACTING with database
+
+1.To interact with the database, we have to import the article model
+    from articles.model import Article [className]
+
+2. To retreive the all of the row/obj
+    Article.objects.all()
+
+3.To create obj/row
+    article = Article()
+    article.title = 'hello world'
+
+    article.title gives 'hello world'
+
+4.saving to the database
+    article.save()
+
+5.To retreive the particular row
+    Article.objects.all()[0][index] // retreives first row
+    Article.objects.all()[0][index].title
+    'hello world'
+
+
+//////////////////////////////////////
+In articles/migrations
+
+def __str__(self) :
+    return self.title

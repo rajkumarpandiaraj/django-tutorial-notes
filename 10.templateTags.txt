@@ -1,0 +1,40 @@
+                                        10.Template Tags {% %} -> to enclose the python code
+                                                         {{ }} -> to display the data
+
+Now, we are going to retreive the articles from the database and rendering it to the ui dynamically.
+
+In articles/views.py
+
+from django.shortcuts import render
+from .models import Article
+
+def articles_list(request) :
+    articles = Article.objects.all().order_by('date')
+    return render(request,'articles/articles_list.html', {'articles' : articles})
+
+
+
+/////////////////////////////////////////////
+
+In articles/templates/articles/articles_list.html
+
+<html>
+    <head>
+        <title>Articles List</title>
+    </head>
+    <body>
+        <h1>Articles List</h1>
+        <div class='articles'>
+        {%for article in articles  %}
+            <div class='article'>
+                <h2><a href='#'>{{article.title}}</a></h2>
+                <p>{{article.body}}</p>
+                <p>{{article.date}}</p>
+            </div>
+
+        {% endfor %}
+        </div>
+    </body>
+</html>
+
+///////////////////////////////////////////

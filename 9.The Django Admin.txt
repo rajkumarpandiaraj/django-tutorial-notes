@@ -1,0 +1,30 @@
+                                        9.Django Admin
+    site admin control the data/content/users of the website/database
+
+to access the admin site
+    1.run the server and open up the "admin/"
+    2.login form opens up
+    3.we can login now coz, no user has signed in
+    4.To create the admin[super user]
+        -> python manage.py createsuperuser
+            username : 
+            email :
+            password : [atleast 8 char combination of char/num]
+    5.Now we can access the admin site using username and password
+    6. In the admin site we can see 
+        -> user
+        -> groups
+        In the admin area, we cannot see/access the article model. To access the model, we have to register it
+    7.To Register the model
+        In articles/admin 
+            from django.contrib import admin
+            from .models import Article // importing the Articles model from the models
+
+            admin.site.register(Article) //registering the model to the admin site
+        ////////////////////////////////////////////////////////////////////////////////////////
+    8.Now we can see the Article model/table in the admin area
+    9. Here we can add/edit/delete Article objects
+    10. adding 3 articles with the title of
+            1.Django Rules
+            2.Djabgonautic Opening
+            3.hello, world
