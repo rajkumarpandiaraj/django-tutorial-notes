@@ -22,8 +22,8 @@ urlpatterns = [
 eg : url(r,'^about/$, func)
 
 r indicates raw string
-^ indicates start of the string(redgex)
-$ indicates end of the string(redgex)
+^ indicates start of the string(regex)
+$ indicates end of the string(regex)
 
 ///////////////////////////////////////////////////////////////////////////////
 create the views.py file in djangonatic folder

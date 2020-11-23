@@ -1,0 +1,29 @@
+                                                        14. URL Parameters
+
+setting:
+    if we click on the article title, we have to go to articles-details page.
+
+In articles/url.py
+
+from django.config.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.articles_list) 
+    url(r'^(?P<slug>[\w-]+)/$', views.article_detail)
+]
+
+///////////////////////////////////////////////////////////////
+In articles/views.py
+
+from django.shortcuts import render
+from .models import Article
+from django.http import HttpResponse
+
+def articles_list(request) :
+    articles = Article.objects.all().order_by('date')
+    return render(request,'articles/articles_list.html', {'articles' : Article})
+
+def article_detail(request,slug) :
+    return HttpResponse(slug)
+

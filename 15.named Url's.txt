@@ -1,0 +1,35 @@
+                                                    15.Named Urls
+
+instead of hard coding the url like '/articles/',we cane= give a name to the url and using that.
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+In articles/url.py
+
+from django.config.urls import url
+from . import views
+
+app_name = 'articles' //app name used to differentiate difference between two same names
+
+urlpatterns = [
+    url(r'^$', views.articles_list) 
+    url(r'^(?P<slug>[\w-]+)/$', views.article_detail, name='details')
+]
+
+///////////////////////////////////////////////////////////////////////
+In articles/templates/articles/articles_list.html
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Articles List</h1>
+    <div class='articles'>
+        {%for article in articles  %}
+            <div class='article'>
+                <h2><a href="{% url 'articles : details' slug=article.slug %}">{{article.title}}</a></h2>
+                <p>{{article.body}}</p>
+                <p>{{article.date}}</p>
+            </div>
+        {% endfor %}
+    <div/>
+{% endblock %}
+
+//////////////////////////////////////////////////////////////////

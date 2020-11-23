@@ -1,0 +1,55 @@
+                                                20.Saving Users
+
+[Taking the user information and Saving it to the Database]
+
+STEP 1 :
+        [checking whether it is a post req or get req. if it is post doing something,if it is get doing different thing]
+        In accounts/views.py
+            from django.shortcuts import render, redirect
+            from django.contrib.auth.forms import UserCreationForm
+
+
+            def signup_view(request) :
+                if request.method == 'POST' :
+                    form = UserCreationForm(request.POST) //validate the form details and return the result
+                                                        //request.POST holds the form data
+                    if form.is_valid() : //return the form is valid or not
+                        form.save() // if the form is valid save thr form data
+                        #log the user [later]
+                        return redirect('articles:list') // articles is appName nd list is name of the url in articles app
+                else :
+                    form = UserCreationForm()
+                return render(request, 'accounts/signup.html', {"form" : form})
+
+    There are Three scenarios.
+    case 1 :
+            The method is post -> if part get execute -> validating the form -> form.is_valid == True -> saving the form/logging nd redirect
+    
+    case 2 :
+            The method is get -> else part get execute -> one blank new form appears in the screen.
+        
+    Case 3 :
+            The method is post -> if part get execute -> validating the form -> form.is_valid == False -> return statment after the else part gets execute with validated form with error.[errors displays on the screen]
+            
+            
+STEP 2:
+    [fill the form and submit we get the csrf tokken is missing or incorrect.] 
+    To rectify this error. send csrf token with the form.
+
+    In accounts/templates/accounts/signup.html
+
+            {% extends 'base_layout.html' %}
+
+            {% block content %}
+                <p>signup</p>
+                <form class='' action='/accounts/signup/' method='post'>
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type='submit' value='signUp'/>
+                </form>
+
+            {% endblock %}
+ 
+ STEP 3 :
+    now we can fill the form and submit and new User got Created.
+    And we can see the signed up user name in the '/admin/' user    

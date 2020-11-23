@@ -1,0 +1,61 @@
+                                                13.Extending Templates
+Creating the base with common texts/tags in every Templates.
+And Extending the base template to create the new/individual template
+
+Folder structure :-
+        djangonautic(proj folder)
+        -> djangonautic(base app folder)
+        ->assets(folder)
+                -> style.css
+        -> articles(app folder)
+                -> .....
+                -> views.py
+                -> urls.py
+                -> templates(folder)
+                    -> articles
+                        -> articles_list.html
+                -> ...
+        -> manage.py
+        -> templates
+                -> home.html
+                -> about.html
+                *-> base_layout.html
+
+/////////////////////////////////////////////////////////////////////
+
+1.create base/global template
+
+In djangonautic/templates/base_layout.html
+
+{% load static from staticfiles %}
+<html>
+    <head>
+        <title>Articles List</title>
+       // <link rel='stylesheet' href='/static/style.css' />
+        <link rel='stylesheet' href="{% static 'style.css' %} />
+    </head>
+    <body>
+        <div class='wrapper>
+            {% block content %}
+            {% endblock %}
+        </div>
+    <body/>
+<html/>
+//////////////////////////////////////////////////////////////////////////////////////
+In articles/templates/articles/articles_list.html
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Articles List</h1>
+    <div class='articles'>
+        {%for article in articles  %}
+            <div class='article'>
+                <h2><a href='#'>{{article.title}}</a></h2>
+                <p>{{article.body}}</p>
+                <p>{{article.date}}</p>
+            </div>
+        {% endfor %}
+    <div/>
+{% endblock %}
+
+//////////////////////////////////////////////////////////////////

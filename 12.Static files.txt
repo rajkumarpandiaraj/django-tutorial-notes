@@ -1,0 +1,84 @@
+                                        12.Static Files
+
+Static Files are css,img,js Files
+        (basically we don't use django to serve the static files, we aws or something in production mode.)
+
+1.In djangonautic/urls.py
+
+from django.config.urls import url, include
+from django.contrib import admin
+from . import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^articles/', include('articles.urls')) //include([appName.url])
+    url(r'^about/$', views.about),
+    url(r'^$', views.home),
+]
+
+urlpatterns += staticfiles_urlpatterns() //check if we are in debug mode, if yes, ready to serve static files
+
+///////////////////////////////////////////
+In settings.py
+    STATIC_URL = '/static/'
+
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'assets')
+    ]
+
+    // BASE_DIR --> is the proj base directory
+
+    save the file and create the assets folder in the base directory
+//////////////////////////////////////////////////////////////////////////////
+
+Folder structure :-
+        djangonautic(proj folder)
+        -> djangonautic(base app folder)
+        ->assets(folder)
+                -> style.css
+        -> articles(app folder)
+                -> .....
+                -> views.py
+                -> urls.py
+                -> templates(folder)
+                    -> articles
+                        -> articles_list.html
+                -> ...
+        -> manage.py
+        -> templates
+                -> home.html
+                -> about.html
+
+/////////////////////////////////////////////////////////////////////
+In assets/style.css
+
+body{
+    background-color : red;
+    //background-image : url(/static/stars.png)
+    background-image : url(stars.png) //relative path
+}
+
+//////////////////////////////////////////////
+In articles/templates/articles/articles_list.html
+{% load static from staticfiles %}
+<html>
+    <head>
+        <title>Articles List</title>
+       // <link rel='stylesheet' href='/static/style.css' />
+        <link rel='stylesheet' href="{% static 'style.css' %} />
+    </head>
+    <body>
+        <h1>Articles List</h1>
+        <div class='articles'>
+        {%for article in articles  %}
+            <div class='article'>
+                <h2><a href='#'>{{article.title}}</a></h2>
+                <p>{{article.body}}</p>
+                <p>{{article.date}}</p>
+            </div>
+
+        {% endfor %}
+        </div>
+    </body>
+</html>

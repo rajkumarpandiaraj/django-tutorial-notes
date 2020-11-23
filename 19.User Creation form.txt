@@ -1,0 +1,32 @@
+                                                19.User Creation Form
+
+    [Creating User creation form comes with django] with validation lyk username existing or not and password validation.
+    we don't create the signup form from the scartch.
+
+STEP 1 :
+        [importing the userCreation for and sending it to the template]
+        In accounts/views.py
+            from django.shortcuts import render
+            from django.contrib.auth.forms import UserCreationForm
+
+            def signup_view(request) :
+            form = UserCreationForm()
+            return render(request, 'accounts/signup.html', {"form" : form})
+
+STEP 2 :
+        [Accessing the form andd outputting it]
+        In accounts/templates/accounts/signup.html
+
+            {% extends 'base_layout.html' %}
+
+            {% block content %}
+                <p>signup</p>
+                <form class='' action='/accounts/signup/' method='post'>
+                    {{ form }}
+                    <input type='submit' value='signUp'/>
+                </form>
+
+            {% endblock %}
+
+
+

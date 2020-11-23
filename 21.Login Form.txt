@@ -1,0 +1,65 @@
+                                                21.Login Form
+
+[Creating the Login form]
+
+Step 1 :
+        In accounts/urls.py
+            from django.conf.urls import urls
+            from .models import views
+
+            app_name = 'accounts'
+
+            urlpatterns = [
+                url(r'^signup/$', views.signup_view, name='signup'),
+                url(r'^login/', views.login_view, name='login')
+            ]
+
+STEP 2 :
+        [creating func for login in the views.py and importing AuthenticationForm and sending it to the template]
+        In accounts/views.py
+            from django.shortcuts import render, redirect
+            from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+
+            def signup_view(request) :
+                if request.method == 'POST' :
+                    form = UserCreationForm(request.POST) //validate the form details and return the result
+                                                        //request.POST holds the form data
+                    if form.is_valid() : //return the form is valid or not
+                        form.save() // if the form is valid save thr form data
+                        #log the user [later]
+                        return redirect('articles:list') // articles is appName nd list is name of the url in articles app
+                else :
+                    form = UserCreationForm()
+
+                return render(request, 'accounts/signup.html', {"form" : form})
+
+
+            def login_view(request) :
+                if request.method == 'POST' :
+                    form = AuthenticationForm(data=request.POST) // validate the data and return the result
+                    if form.is_valid():
+                        #log in the user
+                        return redirect('articles:list')
+                else :
+                    form = AuthenticationForm()
+
+                return render(request, 'accounts/login.html', {"form" : form})
+
+STEP 3 :
+        [creating login.html in template folder and output the login form]
+        In accounts/templates/accounts/login.html
+
+            {% extends 'base_layout.html' %}
+
+            {% block content %}
+                <p>signup</p>
+                <form class='' action={% url 'accounts:login' %} method='post'>
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type='submit' value='login'/>
+                </form>
+
+            {% endblock %}
+
+Now we can redirect

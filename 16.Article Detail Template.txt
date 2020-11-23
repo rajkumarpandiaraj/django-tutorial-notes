@@ -1,0 +1,69 @@
+                                    16.Article Detail Template(summary of 14 nd 15)
+
+retreiving the slug article from the database and rendering it to the article-_detail.html
+
+In articles/templates/articles/articles_list.html
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Articles List</h1>
+    <div class='articles'>
+        {%for article in articles  %}
+            <div class='article'>
+                <h2><a href="{% url 'articles : details' slug=article.slug %}">{{article.title}}</a></h2>
+                <p>{{article.body}}</p>
+                <p>{{article.date}}</p>
+            </div>
+        {% endfor %}
+    <div/>
+{% endblock %}
+
+//////////////////////////////////////////////////////////////////
+
+In articles/url.py
+
+from django.config.urls import url
+from . import views
+
+app_name = 'articles' //app name used to differentiate difference between two same names
+
+urlpatterns = [
+    url(r'^$', views.articles_list) 
+    url(r'^(?P<slug>[\w-]+)/$', views.article_detail, name='details')
+]
+
+///////////////////////////////////////////////////////////////////////
+
+
+In articles/views.py
+
+from django.shortcuts import render
+from .models import Article
+from django.http import HttpResponse
+
+def articles_list(request) :
+    articles = Article.objects.all().order_by('date')
+    return render(request,'articles/articles_list.html', {'articles' : Article})
+
+def article_detail(request,slug) :
+    # return HttpResponse(slug)
+    article = Article.objects.get(slug = slug)
+    return render(request, 'articles/article_detail', {"article" : article})
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+In articles/article_detail.html
+
+{% extends 'base_layout.html' %}
+
+    {% block content %}
+        <div class='article-detail'>
+            <div class='article'>
+                <h2>{{article.title}}</h2>
+                <p>{{article.body}}}</p>
+                <p>{{article.date}}</p>
+            </div>
+        </div>
+
+
+    {% endblock %}

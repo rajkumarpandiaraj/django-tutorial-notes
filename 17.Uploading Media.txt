@@ -1,0 +1,87 @@
+                                                17.Uploading Media
+
+Uploading Media to Our Articles
+
+STEP : 1
+    In settings.py
+        Under STATICFILES_DIRS = [....]
+
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STEP : 2
+    In base folder/urls.py
+        from django.config.urls import url, include
+        from django.contrib import admin
+        from . import views
+        from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+        from django.conf.urls.static import static
+        from django.conf import settings
+
+        urlpatterns = [
+            url(r'^admin/', admin.site.urls),
+            url(r'^articles/', include('articles.urls')) //include([appName.url])
+            url(r'^about/$', views.about),
+            url(r'^$', views.home),
+        ]
+
+        urlpatterns += staticfiles_urlpatterns() //check if we are in debug mode, if yes, ready to serve static files
+
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+STEP : 3 [creating thumbnail field]
+    In articles/models.py
+
+    from django import models
+
+    class Article(models.Model) : //inheriting models.Model
+        title = models.CharField(max-length=100)     // CharField() is a field type of the title field
+        slug = models.SlugField()
+        body = models.TextField()
+        date = models.DateTimeField(auto_now_add = True)
+        thumb = models.ImageField(default='default.png', bank=True)
+        #add author later
+
+        def __str__(self) :
+            return self.title
+
+        def snippet(self) :
+            return self.body[:50] + '...' 
+        
+STEP 4 :
+    installing Pillow to use the ImageField.
+        pip install Pillow
+
+STEP 5 :
+    After creating or editing the Model, we have to make the migrate file using the command
+            -> python manage.py makemigrations
+
+    After that we have migrate the file using command
+            -> python manage.py migrate
+
+STEP 6 : 
+    1.run the server and open the admin panel
+    2.add new article, now we have the thumb field, add the image to that field and save.
+    3.now, in the project folder we have tha medial folder[where the thumb field images are]
+
+STEP 7 :
+    [Accessing that Thumb field and output in th articles-details template ]
+    In articles/article_detail.html
+
+    {% extends 'base_layout.html' %}
+
+        {% block content %}
+            <div class='article-detail'>
+                <div class='article'>
+                <img src={{'article.thumb.url'}}/>
+                    <h2>{{article.title}}</h2>
+                    <p>{{article.body}}}</p>
+                    <p>{{article.date}}</p>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+Adding default.png in media folder.Now the article displays the image

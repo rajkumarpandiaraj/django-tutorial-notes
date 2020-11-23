@@ -1,0 +1,71 @@
+                                        18.Account App
+Account App to manage the authentication. django comes with authentication
+
+STEP 1 :
+        [Creating new app accounts]
+        python manage.py startapp accounts
+
+    Account App created
+
+STEP 2 :
+        [Registering tha accounts app]
+        In settings.py
+            INSTALLED_APPS = [
+                ...
+                ......
+                ........
+                ...........
+                'articles',
+                'accounts',
+            ]
+
+STEP 3 :
+        [creating Urls for sigin and signUp]
+        In accounts/urls.py
+            from django.conf.urls import urls
+            from .models import views
+
+            app_name = 'accounts'
+
+            urlpatterns = [
+                url(r'^signup/$', views.signup_view, name='signup')
+            ]
+
+STEP 4 :
+        include account Urls in Root url
+        In baseapp/urls.py
+        
+            from django.config.urls import url, include
+            from django.contrib import admin
+            from . import views
+            from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+            urlpatterns = [
+                url(r'^admin/', admin.site.urls),
+                url(r'^accounts/', include('accounts.urls'))
+                url(r'^articles/', include('articles.urls')) //include([appName.url]),
+                url(r'^about/$', views.about),
+                url(r'^$', views.home),
+            ]
+
+STEP 5 :
+        [creating func in the views.py]
+        In accounts/views.py
+            from django.shortcuts import render
+
+            def signup_view(request) :
+            return render(request, 'accounts/signup.html')
+
+STEP 6 :
+        [creating templates and accounts and signup.html in accounts folder]
+        In accounts/templates/accounts/signup.html
+            {% extends 'base_layout.html' %}
+
+            {% block content %}
+                <p>signup</p>
+
+            {% endblock %}
+
+
+
+if we run the server and open the accounts/signup/ displays signup page.
