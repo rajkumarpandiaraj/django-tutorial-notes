@@ -1,0 +1,81 @@
+                        24.Requiring Login
+
+[Protect pages by requiring login]
+[user who are logged in only add new article]
+[creating template for the add article page and protecting by requiring login.]
+
+STEP 1 :
+        [creating url for create article]
+    In articles/url.py
+
+        from django.config.urls import url
+        from . import views
+
+        app_name = 'articles' //app name used to differentiate difference between two same names
+
+        urlpatterns = [
+            url(r'^$', views.articles_list)
+            url(r'^create/$', views.article_create, name='create') 
+            url(r'^(?P<slug>[\w-]+)/$', views.article_detail, name='details')
+        ]
+
+STEP 2 :
+        [creating article_create func oin views.py]
+        In articles/views.py
+            from django.shortcuts import render
+            from .models import Article
+            from django.http import HttpResponse
+
+            def articles_list(request) :
+                articles = Article.objects.all().order_by('date')
+                return render(request,'articles/articles_list.html', {'articles' : Article})
+
+            def article_detail(request,slug) :
+                # return HttpResponse(slug)
+                article = Article.objects.get(slug = slug)
+                return render(request, 'articles/article_detail', {"article" : article})
+
+            def article_create(request) :
+            return render(request, 'articles.article_create.html')
+
+STEP 3 :
+        [creating article_create.html in template/articles]
+        In articles/template/articles/article_create.html
+        {% extends 'base_layout.html' %}
+
+        {% block content %}
+            <div class='create-article'>
+                <h2>Create an Awesome New Article</h2>
+            </div>
+        {% endblock %}
+
+Now, if we go to the create url we can view the h2 tag even we are not logged in 
+To make the login require use the decorator
+
+STEP 4 :
+        [making the login, required to view the create article_create page]
+        In articles/views.py
+            from django.shortcuts import render
+            from .models import Article
+            from django.http import HttpResponse
+
+            from django.contrib.auth.decorators import login_required
+
+            def articles_list(request) :
+                articles = Article.objects.all().order_by('date')
+                return render(request,'articles/articles_list.html', {'articles' : Article})
+
+            def article_detail(request,slug) :
+                # return HttpResponse(slug)
+                article = Article.objects.get(slug = slug)
+                return render(request, 'articles/article_detail', {"article" : article})
+
+            @login_required(login_url='/accounts/login/')  // checks for the login status if logged in goes to the create url. if not redirected to the login urls
+            def article_create(request) :
+            return render(request, 'articles.article_create.html')
+
+///////////////////////////////////////////////////////////////////////////////////
+Now we logged out and trying to access the create url and we are redirecting to the login page.
+
+after logging in we are redirected to the articles_list page because of the redirection in accounts app.
+In the next topic we can see how to redirect to create url instead of articles_list url.

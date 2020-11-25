@@ -1,0 +1,74 @@
+                            25.Redirecting after logged In
+                            
+trying to access create url --->not logged in ---->goes to login page---> after logged in ---> redirected to articles list page instead of create page.
+
+STEPS :
+        1.In the url there is an query parameter called next.
+        2.we can access the query parameter in request obj.
+        3.we can access the request Obj in every template.
+        4. send the next property in the request obj along with the form data.
+        5.access that next property from the form data and Redirecting to that next url.
+
+STEP 1 :
+    [accessing the next property from the request obj and sending along with the form data]
+
+    In accounts/templates/accounts/login.html
+
+            {% extends 'base_layout.html' %}
+
+            {% block content %}
+                <p>signup</p>
+                <form class='' action={% url 'accounts:login' %} method='post'>
+                    {% csrf_token %}
+                    {{ form }}
+                    {% if request.GET.next %} // checks for the next property.
+                        <input type='hidden' name='next' value={{request.GET.next}}/>
+                    {% endif %}
+                    <input type='submit' value='login'/>
+                </form>
+
+            {% endblock %}
+
+STEP 2 :
+        [instead of Redirecting to the articles list, if next property exits Redirecting to the next property url]
+        In accounts/views.py
+            from django.shortcuts import render, redirect
+            from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+            from django.contrib.auth import login
+
+
+            def signup_view(request) :
+                if request.method == 'POST' :
+                    form = UserCreationForm(request.POST) //validate the form details and return the result
+                                                        //request.POST holds the form data
+                    if form.is_valid() : //return the form is valid or not
+                        user = form.save() // if the form is valid save thr form data and return the user info
+                    #log the user
+                        login(request,user)    
+                        return redirect('articles:list') // articles is appName nd list is name of the url in articles app
+                else :
+                    form = UserCreationForm()
+
+                return render(request, 'accounts/signup.html', {"form" : form})
+
+
+            def login_view(request) :
+                if request.method == 'POST' :
+                    form = AuthenticationForm(data=request.POST) // validate the data and return the result
+                    if form.is_valid():
+                        #log in the user
+                            user = form.get_user
+                            login(request, user)
+                            if 'next' in request.POST :
+                                return redirect(request.POST.get('next'))
+                            else :
+                                return redirect('articles:list')
+                else :
+                    form = AuthenticationForm()
+
+                return render(request, 'accounts/login.html', {"form" : form})
+
+            def logout_view(request) :
+                if request.method == 'POST'
+                logout(request)
+                return redirect('articles:list')

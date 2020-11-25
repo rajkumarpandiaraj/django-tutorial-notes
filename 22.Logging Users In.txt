@@ -1,0 +1,37 @@
+                                    22.Logging Users In
+
+[we can easily login/signup the user using Django auth]
+
+In accounts/views.py
+            from django.shortcuts import render, redirect
+            from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+            from django.contrib.auth import login
+
+
+            def signup_view(request) :
+                if request.method == 'POST' :
+                    form = UserCreationForm(request.POST) //validate the form details and return the result
+                                                        //request.POST holds the form data
+                    if form.is_valid() : //return the form is valid or not
+                        user = form.save() // if the form is valid save thr form data and return the user info
+                    #log the user
+                        login(request,user)    
+                        return redirect('articles:list') // articles is appName nd list is name of the url in articles app
+                else :
+                    form = UserCreationForm()
+
+                return render(request, 'accounts/signup.html', {"form" : form})
+
+
+            def login_view(request) :
+                if request.method == 'POST' :
+                    form = AuthenticationForm(data=request.POST) // validate the data and return the result
+                    if form.is_valid():
+                        #log in the user
+                            user = form.get_user
+                            login(request, user)
+                        return redirect('articles:list')
+                else :
+                    form = AuthenticationForm()
+
+                return render(request, 'accounts/login.html', {"form" : form})
